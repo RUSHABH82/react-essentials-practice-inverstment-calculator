@@ -1,35 +1,28 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import Header from "./components/Header.jsx";
+
+import UserInput from "./components/UserInput.jsx";
+import {useState} from "react";
+import Results from "./components/Results.jsx";
 
 function App() {
-  const [count, setCount] = useState(0)
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    const [userInput, setUserInput] = useState({
+        initialInvestment: 1000, annualInvestment: 1200, expectedReturn: 6, duration: 10,
+    });
+    const isValidInput = userInput.duration > 0;
+
+    function handleChange(inputIdentifier, newValue) {
+        setUserInput(prevState => ({
+            ...prevState, [inputIdentifier]: +newValue
+        }))
+    }
+
+    return (<>
+        <Header/>
+        <UserInput userInput={userInput} onChangeInput={handleChange}/>
+        {isValidInput ? <Results input={userInput}/> :
+            <p className="center">Enter Valid input (duration should ne grater than 0).</p>}
+    </>)
 }
 
 export default App
